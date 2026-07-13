@@ -2,18 +2,11 @@ pipeline {
 
     agent any
 
+    tools {
+        maven 'Maven3'
+    }
+
     stages {
-
-        stage('Checkout') {
-
-            steps {
-
-                git branch: 'master',
-                url: 'https://github.com/nageshjdevops/ansible-war.git'
-
-            }
-        }
-
 
         stage('Build WAR') {
 
@@ -32,11 +25,9 @@ pipeline {
             steps {
 
                 sh '''
-
                 ansible-playbook \
                 -i ansible/inventory \
                 ansible/deploy-war.yml
-
                 '''
 
             }
@@ -48,9 +39,7 @@ pipeline {
             steps {
 
                 sh '''
-
-                curl http://172.31.11.148:8080/sample-app
-
+                curl -f http://172.31.11.148:8080/sample-app
                 '''
 
             }
