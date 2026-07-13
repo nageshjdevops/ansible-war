@@ -1,0 +1,49 @@
+---
+- name: Deploy WAR to Tomcat nodes
+  hosts: all
+  become: yes
+
+  vars:
+    war_name: sample-app.war
+    tomcat_path: /opt/tomcat
+
+
+  tasks:
+
+
+    - name: Stop Tomcat
+      systemd:
+        name: tomcat
+        state: stopped
+
+
+    - name: Remove old WAR
+      file:
+        path: "{{ tomcat_path }}/webapps/{{ war_name }}"
+        state: absent
+
+
+    - name: Remove exploded application
+      file:
+        path: "{{ tomcat_path }}/webapps/sample-app"
+        state: absent
+
+
+    - name: Copy new WAR
+      copy:
+        src: "../target/{{ war_name }}"
+        dest: "{{ tomcat_path }}/webapps/{{ war_name }}"
+        owner: tomcat
+        group: tomcat
+
+
+    - name: Start Tomcat
+      systemd:
+        name: tomcat
+        state: started
+
+
+    - name: Check Tomcat
+      systemd:
+        name: tomcat
+        state: started

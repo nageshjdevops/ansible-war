@@ -1,0 +1,81 @@
+pipeline {
+
+    agent any
+
+
+    stages {
+
+
+        stage('Checkout') {
+
+            steps {
+
+                git branch: 'main',
+                url: 'YOUR_GIT_URL'
+
+            }
+        }
+
+
+        stage('Build WAR') {
+
+            steps {
+
+                sh '''
+                mvn clean package
+                '''
+
+            }
+        }
+
+
+        stage('Deploy WAR') {
+
+            steps {
+
+                sh '''
+
+                ansible-playbook \
+                -i ansible/inventory \
+                ansible/deploy-war.yml
+
+                '''
+
+            }
+        }
+
+
+        stage('Verify Deployment') {
+
+            steps {
+
+                sh '''
+
+                curl http://172.31.11.148:8080/sample-app
+
+                '''
+
+            }
+        }
+
+    }
+
+
+    post {
+
+        success {
+
+            echo "Deployment Successful"
+
+        }
+
+
+        failure {
+
+            echo "Deployment Failed"
+
+        }
+
+    }
+
+}

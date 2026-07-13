@@ -1,0 +1,12 @@
+# SSH keys
+*.pem
+
+# Maven build files
+target/
+
+# IDE files
+.idea/
+*.iml
+
+# Ansible temporary files
+*.retry
