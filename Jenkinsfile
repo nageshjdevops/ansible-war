@@ -29,7 +29,7 @@ pipeline {
         stage('Verify Deployment') {
             steps {
                 sh '''
-                curl -f http://172.31.11.148:8080/sample-app
+                curl -f http://172.31.11.148:8080/LoginWebApp
                 '''
             }
         }
@@ -37,7 +37,6 @@ pipeline {
     }
 
     post {
-
         success {
             echo "Deployment Successful"
         }
@@ -45,7 +44,6 @@ pipeline {
         failure {
             echo "Deployment Failed"
         }
-
     }
 
 }
