@@ -2,16 +2,14 @@ pipeline {
 
     agent any
 
-
     stages {
-
 
         stage('Checkout') {
 
             steps {
 
-                git branch: 'main',
-                url: 'YOUR_GIT_URL'
+                git branch: 'master',
+                url: 'https://github.com/nageshjdevops/ansible-war.git'
 
             }
         }
