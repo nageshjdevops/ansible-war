@@ -19,6 +19,8 @@ pipeline {
         stage('Deploy WAR') {
             steps {
                 sh '''
+                export ANSIBLE_HOST_KEY_CHECKING=False
+
                 ansible-playbook \
                   -i inventory \
                   ansible-war.yaml
@@ -37,6 +39,7 @@ pipeline {
     }
 
     post {
+
         success {
             echo "Deployment Successful"
         }
@@ -44,6 +47,7 @@ pipeline {
         failure {
             echo "Deployment Failed"
         }
+
     }
 
 }
